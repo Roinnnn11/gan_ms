@@ -1,0 +1,33 @@
+experiment_name: dcgan
+model: dcgan
+device_target: GPU
+device_id: 0
+seed: 42
+
+data:
+  data_root: data/celeba/img_align_celeba
+  image_size: 64
+  batch_size: 128
+  num_parallel_workers: 4
+  shuffle_buffer: 10000
+
+model_params:
+  latent_dim: 100
+  image_channels: 3
+  feature_maps_g: 64
+  feature_maps_d: 64
+
+train:
+  epochs: 25
+  learning_rate_g: 0.0002
+  learning_rate_d: 0.0002
+  beta1: 0.5
+  beta2: 0.999
+  sample_interval: 1
+  checkpoint_interval: 5
+  output_dir: outputs/dcgan
+  fixed_noise_size: 64
+
+wgan_gp:
+  critic_steps: 5
+  lambda_gp: 10.0
