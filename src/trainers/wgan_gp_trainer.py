@@ -51,7 +51,7 @@ class WGANGPTrainer:
         def critic_sum(images):
             return self.critic(images).sum()
 
-        gradients = ms.grad(critic_sum, grad_position=0)(interpolated)
+        gradients = ops.grad(critic_sum, grad_position=0)(interpolated)
         gradients = ops.reshape(gradients, (batch_size, -1))
         slopes = ops.sqrt(ops.sum(ops.square(gradients), axis=1) + 1e-12)
         return ops.mean(ops.square(slopes - 1.0))
@@ -72,12 +72,12 @@ class WGANGPTrainer:
         return -ops.mean(fake_scores)
 
     def train(self, dataset) -> None:
-        critic_grad_fn = ms.value_and_grad(
+        critic_grad_fn = ops.value_and_grad(
             self._critic_loss,
             None,
             self.optimizer_c.parameters,
         )
-        generator_grad_fn = ms.value_and_grad(
+        generator_grad_fn = ops.value_and_grad(
             self._generator_loss,
             None,
             self.optimizer_g.parameters,

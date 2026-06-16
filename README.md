@@ -37,8 +37,34 @@ python scripts/train.py --config configs/dcgan_celeba.yaml
 python scripts/train.py --config configs/wgan_gp_celeba.yaml
 ```
 
+Training outputs are written to:
+
+```text
+outputs/<experiment>/
+  checkpoints/
+  samples/
+  logs/losses.csv
+```
+
 ## Generate
 
 ```powershell
 python scripts/generate.py --config configs/dcgan_celeba.yaml --checkpoint outputs/dcgan/checkpoints/generator_latest.ckpt
 ```
+
+## Project Structure
+
+```text
+configs/              YAML experiment configs
+scripts/              CLI entrypoints
+src/data/             CelebA image loading
+src/models/           DCGAN generator and discriminator
+src/trainers/         DCGAN and WGAN-GP training loops
+src/utils/            Checkpoint and image utilities
+src/metrics/          Reserved for FID and Inception Score
+tests/                Lightweight unit tests
+```
+
+## Next Version
+
+Add FID and Inception Score under `src/metrics/`, then write generated images to a temporary folder and compare them with real CelebA images.

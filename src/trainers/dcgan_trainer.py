@@ -60,12 +60,12 @@ class DCGANTrainer:
         return self.loss_fn(fake_scores, ops.ones_like(fake_scores))
 
     def train(self, dataset) -> None:
-        d_grad_fn = ms.value_and_grad(
+        d_grad_fn = ops.value_and_grad(
             self._discriminator_loss,
             None,
             self.optimizer_d.parameters,
         )
-        g_grad_fn = ms.value_and_grad(
+        g_grad_fn = ops.value_and_grad(
             self._generator_loss,
             None,
             self.optimizer_g.parameters,
