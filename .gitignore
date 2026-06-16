@@ -8,12 +8,12 @@ __pycache__/
 venv/
 env/
 
-data/
-outputs/
-runs/
-checkpoints/
-samples/
-logs/
+/data/
+/outputs/
+/runs/
+/checkpoints/
+/samples/
+/logs/
 
 *.ckpt
 *.mindrecord
