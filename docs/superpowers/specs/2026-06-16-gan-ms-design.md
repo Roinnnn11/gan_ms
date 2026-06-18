@@ -38,7 +38,7 @@ The user points `data_root` to a CelebA image directory such as `data/celeba/img
 
 ## Error Handling
 
-The scripts fail early when the config file is missing, the data directory does not exist, or a checkpoint path is invalid. Training output directories are created automatically. Optional metric commands clearly raise `NotImplementedError` until the second version adds FID and Inception Score.
+The scripts fail early when the config file is missing, the data directory does not exist, or a checkpoint path is invalid. Training output directories are created automatically. FID and Inception Score were added in the second implementation iteration with separate standard and MindSpore backends.
 
 ## Testing
 
