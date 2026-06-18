@@ -7,12 +7,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-import mindspore as ms
-import mindspore.ops as ops
-
-from src.config import load_config
 from src.metrics.image_io import save_generated_images
-from src.models.dcgan import Generator
 
 
 def parse_args() -> argparse.Namespace:
@@ -28,6 +23,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    import mindspore as ms
+    import mindspore.ops as ops
+
+    from src.config import load_config
+    from src.models.dcgan import Generator
+
     checkpoint = Path(args.checkpoint)
     output_dir = Path(args.output_dir)
     if not checkpoint.is_file():

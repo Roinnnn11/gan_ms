@@ -1,0 +1,5 @@
+mindspore
+mindcv
+numpy
+Pillow
+PyYAML

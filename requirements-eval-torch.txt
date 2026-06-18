@@ -1,0 +1,5 @@
+numpy
+Pillow
+torch
+torchvision
+torch-fidelity>=0.3.0
