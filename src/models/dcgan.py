@@ -88,6 +88,7 @@ class Discriminator(nn.Cell):
         image_channels: int = 3,
         feature_maps: int = 64,
         use_sigmoid: bool = True,
+        image_size: int = 64,
     ) -> None:
         super().__init__()
         ndf = feature_maps
@@ -113,7 +114,6 @@ class Discriminator(nn.Cell):
                 has_bias=False,
                 weight_init=conv_weight(),
             ),
-            nn.BatchNorm2d(ndf * 2),
             nn.LeakyReLU(0.2),
             nn.Conv2d(
                 ndf * 2,
@@ -125,7 +125,6 @@ class Discriminator(nn.Cell):
                 has_bias=False,
                 weight_init=conv_weight(),
             ),
-            nn.BatchNorm2d(ndf * 4),
             nn.LeakyReLU(0.2),
             nn.Conv2d(
                 ndf * 4,
@@ -137,7 +136,6 @@ class Discriminator(nn.Cell):
                 has_bias=False,
                 weight_init=conv_weight(),
             ),
-            nn.BatchNorm2d(ndf * 8),
             nn.LeakyReLU(0.2),
             nn.Conv2d(
                 ndf * 8,

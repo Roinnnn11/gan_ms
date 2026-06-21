@@ -1,4 +1,4 @@
-experiment_name: wgan_gp
+experiment_name: wgan_gp_recommended_fixed
 model: wgan_gp
 device_target: GPU
 device_id: 0
@@ -7,8 +7,9 @@ seed: 42
 data:
   data_root: data/celeba/img_align_celeba/img_align_celeba
   image_size: 64
-  batch_size: 128
-  num_parallel_workers: 4
+  center_crop_size: 178
+  batch_size: 256
+  num_parallel_workers: 8
   shuffle_buffer: 10000
 
 model_params:
@@ -18,14 +19,14 @@ model_params:
   feature_maps_d: 64
 
 train:
-  epochs: 50
+  epochs: 125
   learning_rate_g: 0.0001
   learning_rate_d: 0.0001
-  beta1: 0.001
+  beta1: 1.0e-8
   beta2: 0.9
   sample_interval: 1
   checkpoint_interval: 5
-  output_dir: outputs/wgan_gp
+  output_dir: outputs/wgan_gp_recommended_fixed
   fixed_noise_size: 64
 
 wgan_gp:

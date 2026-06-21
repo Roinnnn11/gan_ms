@@ -40,17 +40,28 @@ def prepare_real_images(
     output_dir: str | Path,
     *,
     image_size: int = 64,
+    center_crop_size: int | None = 178,
     num_images: int | None = None,
 ) -> int:
     if image_size <= 0:
         raise ValueError("image_size must be positive.")
+    if center_crop_size is not None and center_crop_size <= 0:
+        raise ValueError("center_crop_size must be positive when provided.")
     paths = discover_image_paths(source_dir, limit=num_images)
     output = _create_empty_output_directory(output_dir)
     resampling = getattr(Image, "Resampling", Image)
 
     for index, path in enumerate(paths):
         with Image.open(path) as image:
-            resized = image.convert("RGB").resize((image_size, image_size), resampling.BILINEAR)
+            converted = image.convert("RGB")
+            if center_crop_size is not None:
+                width, height = converted.size
+                left = max((width - center_crop_size) // 2, 0)
+                top = max((height - center_crop_size) // 2, 0)
+                right = min(left + center_crop_size, width)
+                bottom = min(top + center_crop_size, height)
+                converted = converted.crop((left, top, right, bottom))
+            resized = converted.resize((image_size, image_size), resampling.BILINEAR)
             resized.save(output / f"{index:06d}.png")
     return len(paths)
 

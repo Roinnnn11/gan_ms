@@ -54,7 +54,7 @@ def main() -> None:
     index = 0
     while index < args.num_images:
         current_batch = min(args.batch_size, args.num_images - index)
-        noise = ops.randn((current_batch, params.latent_dim, 1, 1), ms.float32)
+        noise = ops.randn(current_batch, params.latent_dim, 1, 1).astype(ms.float32)
         images = generator(noise).asnumpy()
         index = save_generated_images(images, output_dir, start_index=index)
 

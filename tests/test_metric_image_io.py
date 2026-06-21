@@ -46,6 +46,22 @@ class MetricImageIoTests(unittest.TestCase):
                 self.assertEqual(image.size, (6, 6))
                 self.assertEqual(image.mode, "RGB")
 
+    def test_prepare_real_images_center_crops_before_resize(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / "source"
+            output = Path(root) / "output"
+            source.mkdir()
+            image = np.zeros((4, 6, 3), dtype=np.uint8)
+            image[:, :2] = 10
+            image[:, 2:4] = 200
+            image[:, 4:] = 30
+            Image.fromarray(image).save(source / "wide.png")
+
+            prepare_real_images(source, output, image_size=2, center_crop_size=2, num_images=1)
+
+            with Image.open(output / "000000.png") as cropped:
+                self.assertGreater(np.asarray(cropped).mean(), 150)
+
     def test_save_generated_images_converts_minus_one_to_one_range(self) -> None:
         with tempfile.TemporaryDirectory() as root:
             output = Path(root)

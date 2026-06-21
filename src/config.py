@@ -11,6 +11,7 @@ import yaml
 class DataConfig:
     data_root: str
     image_size: int = 64
+    center_crop_size: int | None = 178
     batch_size: int = 64
     num_parallel_workers: int = 4
     shuffle_buffer: int = 10000

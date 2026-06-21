@@ -29,6 +29,14 @@ class ImageBytesDataset:
 
 
 def create_celeba_dataset(config: DataConfig) -> ds.Dataset:
+    return _build_dataset(config, num_shards=None, shard_id=None)
+
+
+def create_celeba_dataset_dist(config: DataConfig, rank: int, world_size: int) -> ds.Dataset:
+    return _build_dataset(config, num_shards=world_size, shard_id=rank)
+
+
+def _build_dataset(config: DataConfig, num_shards, shard_id) -> ds.Dataset:
     data_root = Path(config.data_root)
     if not data_root.exists():
         raise FileNotFoundError(
@@ -36,18 +44,25 @@ def create_celeba_dataset(config: DataConfig) -> ds.Dataset:
             "Set data.data_root in the YAML config."
         )
 
+    kwargs = {}
+    if num_shards is not None:
+        kwargs = {"num_shards": num_shards, "shard_id": shard_id}
+
     dataset = ds.GeneratorDataset(
         source=ImageBytesDataset(data_root),
         column_names=["image"],
         shuffle=True,
+        **kwargs,
     )
 
-    transforms = [
-        vision.Decode(),
+    transforms = [vision.Decode()]
+    if config.center_crop_size:
+        transforms.append(vision.CenterCrop(config.center_crop_size))
+    transforms.extend([
         vision.Resize((config.image_size, config.image_size), interpolation=Inter.BILINEAR),
         vision.HWC2CHW(),
         vision.Rescale(1.0 / 127.5, -1.0),
-    ]
+    ])
 
     dataset = dataset.map(
         operations=transforms,

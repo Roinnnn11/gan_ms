@@ -5,7 +5,7 @@ device_id: 0
 seed: 42
 
 data:
-  data_root: data/celeba/img_align_celeba
+  data_root: data/celeba/img_align_celeba/img_align_celeba
   image_size: 64
   batch_size: 128
   num_parallel_workers: 4
